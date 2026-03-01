@@ -11,22 +11,49 @@
 
     <div class="form-group">
         <label>Pseudo</label>
-        <input type="text" name="pseudo" class="form-control" value="{{ $joueur->pseudo ?? '' }}" required>
+        <input 
+            type="text" 
+            name="pseudo" 
+            class="form-control" 
+            value="{{ $joueur->pseudo ?? '' }}" 
+            required
+            pattern="^[A-Za-z0-9_]{3,20}$"
+            title="Le pseudo doit contenir entre 3 et 20 caractères (lettres, chiffres ou underscore uniquement).">
     </div>
 
     <div class="form-group">
         <label>Email</label>
-        <input type="email" name="email" class="form-control" value="{{ $joueur->email ?? '' }}" required>
+        <input 
+            type="email" 
+            name="email" 
+            class="form-control" 
+            value="{{ $joueur->email ?? '' }}" 
+            required
+            pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+            title="Veuillez entrer une adresse email valide.">
     </div>
 
     <div class="form-group">
         <label>Score Total</label>
-        <input type="number" name="score_total" class="form-control" value="{{ $joueur->score_total ?? 0 }}">
+        <input 
+            type="number" 
+            name="score_total" 
+            class="form-control" 
+            value="{{ $joueur->score_total ?? 0 }}"
+            min="0"
+            max="999999"
+            pattern="^[0-9]+$"
+            title="Le score doit être un nombre positif.">
     </div>
 
     <div class="form-group">
         <label>Avatar</label>
-        <input type="file" name="avatar" class="form-control">
+        <input 
+            type="file" 
+            name="avatar" 
+            class="form-control"
+            accept="image/png, image/jpeg, image/jpg"
+            title="Formats autorisés : JPG, JPEG, PNG.">
     </div>
 
     <div class="form-group">
