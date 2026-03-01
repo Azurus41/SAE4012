@@ -137,7 +137,6 @@
         <h1>Projet Undercover</h1>
         <p class="project-desc">
             Bienvenue sur notre plateforme d'Undercover en ligne, réalisé dans le cadre de la SAE 4012 par 3 étudiants de MMI2 groupe C. 
-            <br>
             L'objectif est de démontrer nos compétences dans le développement d'applications web avec le framework Laravel.
         </p>
 

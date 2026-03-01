@@ -8,6 +8,7 @@ use App\Http\Controllers\PartieController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthJoueurController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\OnlineGameController;
 
 // --- Public Routes ---
 Route::view('/', 'welcome')->name('welcome');
@@ -31,6 +32,18 @@ Route::middleware(['auth:joueur'])->group(function () {
     Route::get('/joueur/leaderboard', [AuthJoueurController::class, 'leaderboard'])->name('joueur.leaderboard');
     Route::get('/joueur/parties', [AuthJoueurController::class, 'allParties'])->name('joueur.parties');
     Route::delete('/joueur/delete-account', [AuthJoueurController::class, 'deleteAccount'])->name('joueur.delete_account');
+
+    // Online game
+    Route::get('/game', [OnlineGameController::class, 'index'])->name('game.index');
+    Route::post('/game/join', [OnlineGameController::class, 'join'])->name('game.join');
+    Route::get('/game/{code}', [OnlineGameController::class, 'play'])->name('game.play');
+    Route::get('/game/{code}/state', [OnlineGameController::class, 'getState'])->name('game.state');
+    Route::get('/game/{code}/start-check', [OnlineGameController::class, 'startCheck'])->name('game.start_check');
+    Route::post('/game/{code}/force-start', [OnlineGameController::class, 'forceStart'])->name('game.force_start');
+    Route::post('/game/{code}/say', [OnlineGameController::class, 'sayWord'])->name('game.say');
+    Route::post('/game/{code}/message', [OnlineGameController::class, 'sendMessage'])->name('game.message');
+    Route::post('/game/{code}/vote', [OnlineGameController::class, 'vote'])->name('game.vote');
+    Route::post('/game/{code}/guess', [OnlineGameController::class, 'guessMisterWhite'])->name('game.guess');
 });
 
 // --- Admin Auth Routes ---

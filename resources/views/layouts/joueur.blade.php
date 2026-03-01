@@ -84,6 +84,18 @@
             color: white;
         }
 
+        .nav-item.nav-game {
+            background-color: #065f46;
+            color: #6ee7b7;
+            margin-top: 0.5rem;
+            font-weight: 700;
+        }
+
+        .nav-item.nav-game:hover {
+            background-color: #047857;
+            color: #a7f3d0;
+        }
+
         /* Main Content */
         .main-wrapper {
             flex-grow: 1;
@@ -246,6 +258,9 @@
             </a>
             <a href="{{ route('joueur.parties') }}" class="nav-item {{ request()->routeIs('joueur.parties') ? 'active' : '' }}">
                 Parties récentes
+            </a>
+            <a href="{{ route('game.index') }}" class="nav-item nav-game {{ request()->routeIs('game.*') ? 'active' : '' }}">
+                ▶ Nouvelle Partie
             </a>
         </nav>
     </aside>

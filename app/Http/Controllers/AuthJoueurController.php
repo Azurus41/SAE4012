@@ -69,7 +69,14 @@ class AuthJoueurController extends Controller
 
     public function profile()
     {
-        $joueur = Auth::guard('joueur')->user();
+        $id = Auth::guard('joueur')->id();
+        $joueur = Joueur::with([
+            'parties' => function($q) {
+                $q->orderBy('date', 'desc');
+            },
+            'partiesGagnees'
+        ])->findOrFail($id);
+
         return view('joueur.profile', compact('joueur'));
     }
 
