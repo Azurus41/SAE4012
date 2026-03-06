@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Joueur;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AuthJoueurController extends Controller
 {
@@ -104,5 +106,32 @@ class AuthJoueurController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Votre compte a été supprimé avec succès.');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $joueur = Auth::guard('joueur')->user();
+
+        $validated = $request->validate([
+            'pseudo' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9_]{3,20}$/'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('joueurs')->ignore($joueur->id)],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            if ($joueur->avatar && Storage::disk('public')->exists($joueur->avatar)) {
+                Storage::disk('public')->delete($joueur->avatar);
+            }
+
+            $filename = time() . '_' . $request->file('avatar')->getClientOriginalName();
+            $path = $request->file('avatar')->storeAs('avatars', $filename, 'public');
+            $joueur->avatar = $path;
+        }
+
+        $joueur->pseudo = $validated['pseudo'];
+        $joueur->email = $validated['email'];
+        $joueur->save();
+
+        return redirect()->route('joueur.profile')->with('success', 'Profil mis à jour avec succès.');
     }
 }

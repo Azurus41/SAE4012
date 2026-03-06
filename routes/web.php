@@ -29,6 +29,7 @@ Route::get('/register', fn() => redirect()->route('joueur_register'))->name('reg
 // --- Protected Joueur Routes ---
 Route::middleware(['auth:joueur'])->group(function () {
     Route::get('/joueur/profile', [AuthJoueurController::class, 'profile'])->name('joueur.profile');
+    Route::post('/joueur/profile', [AuthJoueurController::class, 'updateProfile'])->name('joueur.profile.update');
     Route::get('/joueur/leaderboard', [AuthJoueurController::class, 'leaderboard'])->name('joueur.leaderboard');
     Route::get('/joueur/parties', [AuthJoueurController::class, 'allParties'])->name('joueur.parties');
     Route::delete('/joueur/delete-account', [AuthJoueurController::class, 'deleteAccount'])->name('joueur.delete_account');
@@ -44,6 +45,7 @@ Route::middleware(['auth:joueur'])->group(function () {
     Route::post('/game/{code}/message', [OnlineGameController::class, 'sendMessage'])->name('game.message');
     Route::post('/game/{code}/vote', [OnlineGameController::class, 'vote'])->name('game.vote');
     Route::post('/game/{code}/guess', [OnlineGameController::class, 'guessMisterWhite'])->name('game.guess');
+    Route::post('/game/{code}/leave', [OnlineGameController::class, 'leave'])->name('game.leave');
 });
 
 // --- Admin Auth Routes ---

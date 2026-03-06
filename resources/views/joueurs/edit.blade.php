@@ -48,6 +48,11 @@
 
     <div class="form-group">
         <label>Avatar</label>
+        @if(isset($joueur) && $joueur->avatar)
+            <div style="margin-bottom: 10px;">
+                <img src="{{ asset('storage/' . $joueur->avatar) }}" alt="Avatar" class="thumbnail" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+            </div>
+        @endif
         <input 
             type="file" 
             name="avatar" 

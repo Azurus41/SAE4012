@@ -255,6 +255,39 @@ class OnlineGameController extends Controller
         return response()->json($this->buildState($partie, $joueur));
     }
 
+    public function leave(string $code)
+    {
+        $joueur = Auth::guard('joueur')->user();
+        $partie = OnlinePartie::where('code', $code)->first();
+
+        if (!$partie) {
+            return redirect()->route('game.index');
+        }
+
+        $pj = OnlinePartieJoueur::where('online_partie_id', $partie->id)
+            ->where('joueur_id', $joueur->id)
+            ->first();
+
+        if ($pj) {
+            if ($partie->statut === 'waiting') {
+                $pj->delete();
+                if ($partie->joueurs()->count() === 0) {
+                    $partie->delete();
+                } else {
+                    $this->broadcastState($partie);
+                }
+            } else if ($partie->statut !== 'finished') {
+                if (!$pj->est_elimine) {
+                    $pj->update(['est_elimine' => true]);
+                    $this->sendSystemMessage($partie, "{$joueur->pseudo} a quitté la partie.");
+                    $this->checkWinCondition($partie->fresh(['joueurs.joueur']));
+                }
+            }
+        }
+
+        return redirect()->route('game.index');
+    }
+
     public function guessMisterWhite(Request $request, string $code)
     {
         $joueur = Auth::guard('joueur')->user();
@@ -618,6 +651,7 @@ class OnlineGameController extends Controller
                 'est_elimine' => $pj->est_elimine,
                 'a_parle'     => $pj->a_parle,
                 'dernier_mot' => $pj->dernier_mot,
+                'avatar'      => $pj->joueur->avatar,
                 'ordre'       => $pj->ordre,
                 // Only reveal role/word to the player themselves
                 'role'        => ($currentJoueur && $currentJoueur->id === $pj->joueur_id) ? $pj->role : null,

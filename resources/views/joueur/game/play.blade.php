@@ -305,6 +305,10 @@
                 <div class="timer-label" id="timer-label">—</div>
             </div>
             <span class="game-code" id="game-code">{{ $partie->code }}</span>
+            <form action="{{ route('game.leave', $partie->code) }}" method="POST" style="margin:0;">
+                @csrf
+                <button type="submit" class="action-btn btn-red" style="padding: 0.5rem 1rem; font-size: 0.875rem; border-radius: 0.5rem;" onclick="return confirm('Quitter la partie ?')">Quitter</button>
+            </form>
         </div>
         <span style="color: var(--muted); font-size: 0.875rem;">{{ $joueur->pseudo }}</span>
     </header>
@@ -411,8 +415,12 @@ function renderPlayers(data) {
 
     list.innerHTML = data.joueurs.map((j, i) => {
         const isActive = data.statut === 'playing' && actifs.indexOf(j) !== -1 && actifs.indexOf(j) === actifIndex;
+        const avatarContent = j.avatar 
+            ? `<img src="{{ asset('storage') }}/${j.avatar}" style="width:100%;height:100%;object-fit:cover;">` 
+            : j.pseudo[0].toUpperCase();
+            
         return `<div class="player-item ${j.est_elimine ? 'eliminated' : ''} ${isActive ? 'active' : ''}">
-            <div class="player-avatar">${j.pseudo[0].toUpperCase()}</div>
+            <div class="player-avatar" style="overflow:hidden;">${avatarContent}</div>
             <div>
                 <div class="player-name">${j.pseudo}${j.id == MY_ID ? ' <span style="font-size:0.65rem;color:var(--primary);">(Vous)</span>' : ''}</div>
                 ${j.est_elimine ? '<div style="font-size:0.7rem;color:var(--red);">Éliminé</div>' : ''}
@@ -587,7 +595,7 @@ function renderVoting(center, data, isEliminated) {
 }
 
 function renderMisterWhiteGuess(center, data, me) {
-    const isMW = me?.role === 'mister_white' && !me?.est_elimine;
+    const isMW = me?.role === 'mister_white';
 
     if (isMW) {
         center.innerHTML = `
