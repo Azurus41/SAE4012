@@ -272,7 +272,7 @@
                     <span class="user-name">{{ Auth::guard('joueur')->user()->pseudo }}</span>
                     <div class="user-avatar" style="overflow: hidden;">
                         @if(Auth::guard('joueur')->user()->avatar)
-                            <img src="{{ asset('storage/' . Auth::guard('joueur')->user()->avatar) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ '/SAE4012/public/storage/' . Auth::guard('joueur')->user()->avatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                         @else
                             {{ strtoupper(substr(Auth::guard('joueur')->user()->pseudo, 0, 1)) }}
                         @endif

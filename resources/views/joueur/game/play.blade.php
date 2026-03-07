@@ -416,7 +416,7 @@ function renderPlayers(data) {
     list.innerHTML = data.joueurs.map((j, i) => {
         const isActive = data.statut === 'playing' && actifs.indexOf(j) !== -1 && actifs.indexOf(j) === actifIndex;
         const avatarContent = j.avatar 
-            ? `<img src="{{ asset('storage') }}/${j.avatar}" style="width:100%;height:100%;object-fit:cover;">` 
+            ? `<img src="/SAE4012/public/storage/${j.avatar}" style="width:100%;height:100%;object-fit:cover;">` 
             : j.pseudo[0].toUpperCase();
             
         return `<div class="player-item ${j.est_elimine ? 'eliminated' : ''} ${isActive ? 'active' : ''}">

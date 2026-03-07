@@ -13,6 +13,18 @@ use App\Http\Controllers\OnlineGameController;
 // --- Public Routes ---
 Route::view('/', 'welcome')->name('welcome');
 
+// Serve storage files directly without relying on symlinks
+Route::get('/storage/{folder}/{filename}', function ($folder, $filename) {
+    if (!in_array($folder, ['avatars', 'mots'])) {
+        abort(404);
+    }
+    $path = storage_path('app/public/' . $folder . '/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+})->where('filename', '.*');
+
 // --- Joueur Auth Routes ---
 Route::get('/joueur/login', [AuthJoueurController::class, 'showLoginForm'])->name('joueur_login');
 Route::post('/joueur/login', [AuthJoueurController::class, 'login'])->name('joueur.login.submit');

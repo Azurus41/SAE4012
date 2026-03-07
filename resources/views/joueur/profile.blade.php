@@ -9,7 +9,7 @@
         <div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center; padding: 3rem 2rem;">
             <div style="width: 120px; height: 120px; border-radius: 50%; background-color: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 800; margin-bottom: 1.5rem; border: 1px solid var(--border); overflow: hidden;">
                 @if($joueur->avatar)
-                    <img src="{{ asset('storage/' . $joueur->avatar) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="{{ '/SAE4012/public/storage/' . $joueur->avatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                 @else
                     {{ strtoupper(substr($joueur->pseudo, 0, 1)) }}
                 @endif

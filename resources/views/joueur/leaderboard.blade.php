@@ -34,7 +34,7 @@
                             <div style="display: flex; align-items: center; gap: 0.75rem;">
                                 <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #64748b; overflow: hidden;">
                                     @if($j->avatar)
-                                        <img src="{{ asset('storage/' . $j->avatar) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                        <img src="{{ '/SAE4012/public/storage/' . $j->avatar }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                                     @else
                                         {{ strtoupper(substr($j->pseudo, 0, 1)) }}
                                     @endif

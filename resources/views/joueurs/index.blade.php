@@ -19,7 +19,7 @@
         <tr>
             <td>
                 @if($joueur->avatar)
-                    <img src="{{ asset('storage/' . $joueur->avatar) }}" class="thumbnail">
+                    <img src="{{ '/SAE4012/public/storage/' . $joueur->avatar }}" class="thumbnail">
                 @else
                     -
                 @endif
