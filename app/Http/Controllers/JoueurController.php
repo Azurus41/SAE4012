@@ -15,6 +15,44 @@ class JoueurController extends Controller
         return view('joueurs.index', compact('joueurs'));
     }
 
+    /**
+     * Search for a joueur by pseudo and return statistics.
+     */
+    public function search(Request $request)
+    {
+        $q = $request->query('q');
+
+        $joueur = null;
+        $stats = null;
+
+        if ($q) {
+            $joueur = Joueur::where('pseudo', 'like', "%{$q}%")
+                ->with(['parties' => function ($query) {
+                    $query->withPivot('points_gagnes');
+                }, 'partiesGagnees'])
+                ->first();
+
+            if ($joueur) {
+                $totalParties = $joueur->parties->count();
+                $victoires = $joueur->partiesGagnees->count();
+                $totalPoints = $joueur->parties->sum(function ($p) {
+                    return $p->pivot->points_gagnes ?? 0;
+                });
+
+                $moyennePoints = $totalParties > 0 ? round($totalPoints / $totalParties, 2) : 0;
+
+                $stats = [
+                    'total_parties' => $totalParties,
+                    'victoires' => $victoires,
+                    'total_points' => $totalPoints,
+                    'moyenne_points' => $moyennePoints,
+                ];
+            }
+        }
+
+        return view('joueurs.search', compact('joueur', 'stats', 'q'));
+    }
+
     public function create()
     {
         return view('joueurs.create');
